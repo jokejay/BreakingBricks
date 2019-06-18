@@ -6,6 +6,7 @@
 
 #include "Point.hpp"
 #include "IObject.hpp"
+#include "Label.hpp"
 
 class Ball;
 class PlayScene;
@@ -17,6 +18,7 @@ protected:
 	int money;
 	PlayScene* getPlayScene();
 public:
+	bool Moving;
 	Brick(float x, float y, float hp);
 	void Hit(float damage);
 	void Update(float deltaTime) override;

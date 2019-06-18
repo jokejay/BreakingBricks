@@ -14,7 +14,7 @@ void StartScene::Initialize() {
 	int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
 	int halfW = w / 2;
 	int halfH = h / 2;
-	AddNewObject(new Engine::Image("start/background.jpg", 0, 0, 0, 0, 0, 0));
+	AddNewObject(new Engine::Image("start/background.png", 0, 0, 0, 0, 0, 0));
 	Engine::ImageButton* btn, *gts;
 	btn = new Engine::ImageButton("start/play_button_1.png", "start/play_button_2.png", 165, 500, 0, 0, 0.5, 0.5, "touch.ogg");
 	btn->SetOnClickCallback(std::bind(&StartScene::BackOnClick, this, 2));

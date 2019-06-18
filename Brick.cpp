@@ -17,7 +17,8 @@ PlayScene* Brick::getPlayScene() {
 }
 
 Brick::Brick(float x, float y, float hp) :
-	Engine::IObject(x, y, 20, 40), speed(10), hp(hp), money(hp) {
+	Engine::IObject(x, y, PlayScene::BlockWidth, PlayScene::BlockHeight), speed(20), hp(hp), money(hp) {
+	Moving = 0;
 }
 void Brick::Hit(float damage) {
 	hp -= damage;
@@ -28,30 +29,9 @@ void Brick::Hit(float damage) {
 	}
 }
 void Brick::Update(float deltaTime) {
-	// Pre-calculate the velocity.
-	if (getPlayScene()->GetState() != PlayScene::State::MOVING_BRICK)
-		return;
-	float remainSpeed = speed * deltaTime;
-	while (remainSpeed != 0) {
-		Engine::Point target = path.back() * PlayScene::BlockSize + Engine::Point(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
-		Engine::Point vec = target - Position;
-		Engine::Point normalized = vec.Normalize();
-		if (remainSpeed - vec.Magnitude() > 0) {
-			Position = target;
-			path.pop_back();
-			remainSpeed -= vec.Magnitude();
-		}
-		else {
-			Velocity = normalized * remainSpeed / deltaTime;
-			remainSpeed = 0;
-		}
-	}
-	Sprite::Update(deltaTime);
+		Position.y = PlayScene::StartY + (getPlayScene()->wave - money) * Size.y;
 }
 void Brick::Draw() const {
-	Sprite::Draw();
-	if (PlayScene::DebugMode) {
-		// Draw collision radius.
-		al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
-	}
+	al_draw_rectangle(Position.x, Position.y, Position.x + Size.x, Position.y + Size.y,
+		al_map_rgb(255, 255, 255), 3);
 }

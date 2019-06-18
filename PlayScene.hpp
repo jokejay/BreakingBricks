@@ -6,6 +6,7 @@
 
 #include "IScene.hpp"
 #include "Point.hpp"
+#include "Brick.hpp"
 
 class Turret;
 namespace Engine {
@@ -19,22 +20,24 @@ protected:
 	int balls;
 	int money;
 	int SpeedMult;
-	int wave;
-	int State;
 public:
 	static bool DebugMode;
 	static const std::vector<Engine::Point> directions;
 	static const int MapWidth, MapHeight;
-	static const int BlockSize;
-	static const std::vector<Engine::Point> SpawnPoint;
+	static const int BlockWidth, BlockHeight;
+	static const int StartY;
 	static const int EndY;
+	int wave;
 	static const std::vector<int> code;
 	Engine::Point pos_ball;
 	enum State {
 		SET_ANGLE,
 		BALL_RUNNING,
 		MOVING_BRICK,
+		GENERATING_BRICK,
+		FINISH,
 	};
+	State cur_State;
 	float ticks;
 	// Map tiles.
 	Group* DebugIndicatorGroup;
@@ -43,7 +46,6 @@ public:
 	Group* EffectGroup;
 	Group* UIGroup;
 	Engine::Label* UIMoney;
-	Engine::Label* UIBalls;
 	explicit PlayScene() = default;
 	void Initialize() override;
 	void Update(float deltaTime) override;
@@ -56,7 +58,6 @@ public:
 	void EarnMoney(int money);
 	void ConstructUI();
 	void UIBtnClicked(int id);
-	enum State GetState();
 	// void ModifyReadMapTiles();
 };
 #endif // PLAYSCENE_HPP
