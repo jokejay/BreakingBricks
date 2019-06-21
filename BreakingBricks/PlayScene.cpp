@@ -59,7 +59,7 @@ void PlayScene::Update(float deltaTime) {
 	if (cur_State == State::GENERATING_BRICK) {
 		wave += 1;
 		for (int i = 0; i < MapWidth; i++) {
-			BrickGroup->AddNewObject(new Brick(StartX + i * BlockTotalW, StartY, wave));
+			BrickGroup->AddNewObject(new Brick(StartX + i * BlockTotalW, StartY - BlockHeight - 6, wave));
 		}
 		cur_State = SET_ANGLE;
 	}
