@@ -1,0 +1,36 @@
+[INFO] Game Initializing...
+[INFO] Loaded Resource<image>: resources/images/icon.png
+[INFO] Loaded window icon from: icon.png
+[INFO] There are total 16 supported mouse buttons
+[INFO] Allegro5 initialized
+[INFO] Game begin
+[INFO] Loaded Resource<image>: resources/images/start/background.png
+[INFO] Loaded Resource<image>: resources/images/start/play_button_1.png
+[INFO] Loaded Resource<image>: resources/images/start/play_button_2.png
+[INFO] Loaded Resource<image>: resources/images/start/shop_button_1.png
+[INFO] Loaded Resource<image>: resources/images/start/shop_button_2.png
+[INFO] Loaded Resource<audio>: resources/audios/lose.wav
+[INFO] Game initialized
+[INFO] Game start event loop
+[INFO] Loaded Resource<audio>: resources/audios/touch.ogg
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<audio>
+[INFO] Destroyed Resource<audio>
+[INFO] Loaded Resource<image>: resources/images/play/background.png
+[INFO] Loaded Resource<image>: resources/images/play/sand.png scaled to 320x832
+[INFO] Loaded Resource<font>: resources/fonts/pirulen.ttf with size 32
+[INFO] Loaded Resource<font>: resources/fonts/pirulen.ttf with size 24
+[INFO] Loaded Resource<audio>: resources/audios/play.ogg
+[INFO] Changed to play scene
+[INFO] Game Terminating...
+[INFO] Game terminated
+[INFO] Game end
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<font>
+[INFO] Destroyed Resource<audio>
