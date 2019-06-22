@@ -36,8 +36,9 @@ void PlayScene::Initialize() {
 	balls = 1;
 	money = 150;
 	SpeedMult = 1;
-	wave = 1;
-	MotherPosition = Engine::Point(240, EndY);
+	wave = 0;
+	cur_State = State::GENERATING_BRICK;
+	MotherPosition = Engine::Point(240, EndY - 10);
 	MotherDirection = Engine::Point(0, -1);
 	// Add groups from bottom to top.
 	AddNewObject(new Engine::Image("play/background.png", 0, 0, 0, 0, 0, 0));
@@ -48,7 +49,7 @@ void PlayScene::Initialize() {
 	// Should support buttons.
 	AddNewControlObject(UIGroup = new Group());
 	ConstructUI();
-	BallGroup->AddNewObject(new Ball(10, 1, MotherPosition, MotherDirection, 10));
+	BallGroup->AddNewObject(new Ball(8, 1, MotherPosition, MotherDirection, 10));
 	AudioHelper::PlayBGM("play.ogg");
 }
 void PlayScene::Update(float deltaTime) {
