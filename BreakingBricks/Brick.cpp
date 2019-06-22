@@ -13,7 +13,7 @@
 #include "PlayScene.hpp"
 
 const int Brick::boldness = 5;
-const int Brick::StartR = 211, Brick::StartG = 38, Brick::StartB = 13, Brick::EndR = 246, Brick::EndG = 236, Brick::EndB = 112;
+const int Brick::StartR = 232, Brick::StartG = 32, Brick::StartB = 105, Brick::EndR = 246, Brick::EndG = 236, Brick::EndB = 112;
 
 PlayScene* Brick::getPlayScene() {
 	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
@@ -46,10 +46,10 @@ void Brick::Update(float deltaTime) {
 		LifeUI->Position.y = Position.y + 0.5 * Size.y;
 }
 void Brick::Draw() const {
-	const static int StartR = 211, StartG = 38, StartB = 13, EndR = 246, EndG = 236, EndB = 112;
 	int DiffR = EndR - StartR, DiffG = EndG - StartG, DiffB = EndB - StartB;
 	float Diff = 1 - hp / money;
 	al_draw_rectangle(Position.x, Position.y, Position.x + Size.x, Position.y + Size.y,
 		al_map_rgb(StartR + Diff * DiffR, StartG + Diff * DiffG, StartB + Diff * DiffB), boldness);
+	LifeUI->Color = al_map_rgb(StartR + Diff * DiffR, StartG + Diff * DiffG, StartB + Diff * DiffB);
 	LifeUI->Draw();
 }

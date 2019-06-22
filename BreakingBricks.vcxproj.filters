@@ -59,9 +59,6 @@
     <ClCompile Include="BreakingBricks\Sprite.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="BreakingBricks\AudioHelper.cpp">
-      <Filter>來源檔案</Filter>
-    </ClCompile>
     <ClCompile Include="BreakingBricks\Brick.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
@@ -77,11 +74,11 @@
     <ClCompile Include="BreakingBricks\Ball.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="BreakingBricks\AudioHelper.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BreakingBricks\AudioHelper.hpp">
-      <Filter>標頭檔</Filter>
-    </ClInclude>
     <ClInclude Include="BreakingBricks\Brick.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
@@ -135,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="BreakingBricks\Ball.hpp">
       <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakingBricks\AudioHelper.hpp">
+      <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
