@@ -22,7 +22,7 @@ PlayScene* Brick::getPlayScene() {
 Brick::Brick(float x, float y, float hp) :
 	Engine::IObject(x, y, PlayScene::BlockWidth, PlayScene::BlockHeight), speed(20), hp(hp), money(hp) {
 	Moving = 0;
-	LifeUI = new Engine::Label(std::to_string(static_cast<int>(hp)), "pirulen.ttf", 24, x+0.5*Size.x, y+0.5*Size.y, StartR, StartG, StartB, 255, 0.5, 0.5);
+	LifeUI = new Engine::Label(std::to_string(static_cast<int>(hp)), "square.ttf", 20, x+0.5*Size.x, y+0.5*Size.y, StartR, StartG, StartB, 255, 0.5, 0.5);
 }
 void Brick::Hit(float damage) {
 	hp -= damage;
