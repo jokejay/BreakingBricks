@@ -9,18 +9,35 @@
 [INFO] Loaded Resource<image>: resources/images/start/play_button_2.png
 [INFO] Loaded Resource<image>: resources/images/start/shop_button_1.png
 [INFO] Loaded Resource<image>: resources/images/start/shop_button_2.png
-[INFO] Loaded Resource<audio>: resources/audios/lose.wav
+[INFO] Loaded Resource<audio>: resources/audios/startGame.ogg
 [INFO] Game initialized
 [INFO] Game start event loop
-[INFO] Loaded Resource<audio>: resources/audios/touch.ogg
-[INFO] Game Terminating...
-[INFO] Game terminated
-[INFO] Game end
-[INFO] Destroyed Resource<image>
+[INFO] Loaded Resource<audio>: resources/audios/button.ogg
 [INFO] Destroyed Resource<image>
 [INFO] Destroyed Resource<image>
 [INFO] Destroyed Resource<image>
 [INFO] Destroyed Resource<image>
 [INFO] Destroyed Resource<image>
 [INFO] Destroyed Resource<audio>
+[INFO] Destroyed Resource<audio>
+[INFO] Loaded Resource<image>: resources/images/play/background.png
+[INFO] Loaded Resource<image>: resources/images/play/back.png
+[INFO] Loaded Resource<font>: resources/fonts/square.ttf with size 70
+[INFO] Loaded Resource<font>: resources/fonts/square.ttf with size 30
+[INFO] Loaded Resource<font>: resources/fonts/square.ttf with size 48
+[INFO] Loaded Resource<image>: resources/images/play/coin.png scaled to 50x50
+[INFO] Changed to play scene
+[INFO] Loaded Resource<font>: resources/fonts/square.ttf with size 20
+[INFO] Loaded Resource<audio>: resources/audios/collision.ogg
+[INFO] Game Terminating...
+[INFO] Game terminated
+[INFO] Game end
+[INFO] saved
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<font>
+[INFO] Destroyed Resource<font>
+[INFO] Destroyed Resource<font>
 [INFO] Destroyed Resource<audio>

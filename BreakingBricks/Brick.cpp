@@ -27,10 +27,10 @@ Brick::Brick(float x, float y, float hp) :
 void Brick::Hit(float damage) {
 	hp -= damage;
 	LifeUI->Text = std::to_string(static_cast<int>(hp));
+	AudioHelper::PlayAudio("collision.ogg");
 	if (hp <= 0) {
 		getPlayScene()->EarnMoney(money);
 		getPlayScene()->BrickGroup->RemoveObject(objectIterator);
-		AudioHelper::PlayAudio("explosion.wav");
 	}
 }
 void Brick::Update(float deltaTime) {

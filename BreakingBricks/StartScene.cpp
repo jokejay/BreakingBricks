@@ -16,13 +16,13 @@ void StartScene::Initialize() {
 	int halfH = h / 2;
 	AddNewObject(new Engine::Image("start/background.png", 0, 0, 0, 0, 0, 0));
 	Engine::ImageButton* btn, *gts;
-	btn = new Engine::ImageButton("start/play_button_1.png", "start/play_button_2.png", 165, 500, 0, 0, 0.5, 0.5, "touch.ogg");
+	btn = new Engine::ImageButton("start/play_button_1.png", "start/play_button_2.png", 165, 500, 0, 0, 0.5, 0.5, "button.ogg");
 	btn->SetOnClickCallback(std::bind(&StartScene::BackOnClick, this, 2));
 	AddNewControlObject(btn);
-	gts = new Engine::ImageButton("start/shop_button_1.png", "start/shop_button_2.png", 375, 500, 0, 0, 0.5, 0.5, "touch.ogg");
+	gts = new Engine::ImageButton("start/shop_button_1.png", "start/shop_button_2.png", 375, 500, 0, 0, 0.5, 0.5, "button.ogg");
 	gts->SetOnClickCallback(std::bind(&StartScene::BackOnClick, this, 3));
 	AddNewControlObject(gts);
-	AudioHelper::PlayAudio("lose.wav");
+	AudioHelper::PlayAudio("startGame.ogg");
 }
 
 

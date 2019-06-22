@@ -19,6 +19,7 @@
 #include "PlayScene.hpp"
 #include "Sprite.hpp"
 #include "ImageButton.hpp"
+#include "LOG.hpp"
 
 #include "Brick.hpp"
 #include "Ball.hpp"
@@ -54,7 +55,6 @@ void PlayScene::Initialize() {
 	ReadDataHelper();
 	ConstructUI();
 	BallGroup->AddNewObject(new Ball(8, 1, MotherPosition, MotherDirection, 10));
-	AudioHelper::PlayBGM("play.ogg");
 }
 void PlayScene::Update(float deltaTime) {
 	// If we use deltaTime directly, then we might have Bullet-through-paper problem.
@@ -130,6 +130,7 @@ void PlayScene::OnMouseMove(int mx, int my) {
 }
 void PlayScene::OnMouseUp(int button, int mx, int my) {
 	IScene::OnMouseUp(button, mx, my);
+	down = false;
 	if (cur_State == State::SET_ANGLE) {
 		Engine::Point diff = InitPt - FinPt, velo = diff.Normalize();
 		if (diff.Magnitude() < 50 || velo.y > -0.2)
@@ -140,7 +141,6 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
 			ball->Velocity = velo;
 		}
 		cur_State = State::BALL_RUNNING;
-		down = false;
 	}
 }
 void PlayScene::OnKeyDown(int keyCode) {
@@ -157,7 +157,7 @@ void PlayScene::ConstructUI() {
 	// Background
 	// Text
 	Engine::ImageButton* btn;
-	btn = new Engine::ImageButton("play/back.png", "play/back.png", 50, 50, 0, 0, 0.5, 0.5, "touch.ogg");
+	btn = new Engine::ImageButton("play/back.png", "play/back.png", 50, 50, 0, 0, 0.5, 0.5, "button.ogg");
 	btn->SetOnClickCallback(std::bind(&PlayScene::BackOnClick, this, 1));
 	UIGroup -> AddNewControlObject(btn);
 
@@ -173,7 +173,9 @@ void PlayScene::UIBtnClicked(int id) {
 }
 
 void PlayScene::BackOnClick(int stage) {
-
+	if (stage == 1) {
+		Engine::GameEngine::GetInstance().ChangeScene("start");
+	}
 }
 
 void PlayScene::ReadDataHelper() {
@@ -189,4 +191,12 @@ void PlayScene::ReadDataHelper() {
 
 	fp >> money >> top_wave;
 	fp.close();
+}
+
+PlayScene::~PlayScene() {
+	std::string filename = std::string("resources/data.txt");
+	std::fstream fp(filename, std::ios::out);
+	fp << money << std::endl << top_wave;
+	fp.close();
+	Engine::LOG(Engine::INFO) << "saved";
 }
