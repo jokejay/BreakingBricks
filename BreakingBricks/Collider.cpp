@@ -17,8 +17,28 @@ namespace Engine {
 	bool Collider::IsCircleOverlap(Point c1, float r1, Point c2, float r2) {
 		return (c1 - c2).Magnitude() < r1 + r2;
 	}
-	bool IsCircleOverlapRect(Point c1, float r1, Point rectp1, Point rectp2) {
+	bool Collider::IsCircleOverlapRect(Point c1, float r1, Point rectp1, Point rectp2) {
 		//TBD: determine whether a circle overlap rectangle
+		float testx = c1.x;
+		float testy = c1.y;
+		float rw = rectp2.x - rectp1.x;
+		float rh = rectp2.y - rectp2.y;
+		float ry = (rectp2.y + rectp2.y) / 2;
+		float rx = (rectp2.x + rectp2.x) / 2;
+
+		if (c1.x < rx)				testx = rx;
+		else if (c1.x > rx + rw)	testx = rx + rw;
+		if (c1.y < ry)				testy = ry;
+		else if (c1.y > ry + rh)		testy = ry + rh;
+
+		float distX = c1.x - testx;
+		float distY = c1.y - testy;
+		float distance = sqrt( (distX * distX) + (distY * distY) );
+
+		if (distance <= radius) {
+			return true;
+		}
+
 		return false;
 	}
 }
