@@ -26,6 +26,7 @@
 [INFO] Loaded Resource<font>: resources/fonts/pirulen.ttf with size 24
 [INFO] Loaded Resource<audio>: resources/audios/play.ogg
 [INFO] Changed to play scene
+[INFO] Loaded Resource<audio>: resources/audios/explosion.wav
 [INFO] Game Terminating...
 [INFO] Game terminated
 [INFO] Game end
@@ -33,4 +34,5 @@
 [INFO] Destroyed Resource<image>
 [INFO] Destroyed Resource<image>
 [INFO] Destroyed Resource<font>
+[INFO] Destroyed Resource<audio>
 [INFO] Destroyed Resource<audio>
