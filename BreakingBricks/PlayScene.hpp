@@ -67,7 +67,7 @@ public:
 	void ReadDataHelper();
 	void UIBtnClicked(int id);
 	void BackOnClick(int stage);
-	~PlayScene();
+	void SaveDataHelper();
 	// void ModifyReadMapTiles();
 };
 #endif // PLAYSCENE_HPP

@@ -68,6 +68,7 @@ void PlayScene::Update(float deltaTime) {
 		if (wave > top_wave) {
 			top_wave = wave;
 			UITop->Text = std::to_string(top_wave);
+			SaveDataHelper();
 		}
 		std::random_device rd;
 		std::default_random_engine gen = std::default_random_engine(rd());
@@ -94,6 +95,7 @@ void PlayScene::Update(float deltaTime) {
 				Brick* brick = dynamic_cast<Brick*>(it);
 				if (brick->Position.y + 2 * BlockHeight > EndY) {
 					get_end = true;
+					cur_State = FINISH;
 					break;
 				}
 			}
@@ -111,6 +113,12 @@ void PlayScene::Draw() const {
 			return;
 		al_draw_line(MotherPosition.x, MotherPosition.y, MotherPosition.x + velo.x * 100, MotherPosition.y + velo.y*100, 
 			al_map_rgba(255, 255, 255, 150), 5);
+	}
+	if (cur_State == FINISH) {
+		al_draw_filled_rectangle(50, 300, 430, 500, al_map_rgb(Brick::StartR, Brick::StartG, Brick::StartB));
+		static Engine::Label* Banner = new Engine::Label("GaveOver!", "square.ttf", 72, 240, 450, 255, 255,
+			255, 255, 0.5, 1);
+		Banner->Draw();
 	}
 }
 void PlayScene::OnMouseDown(int button, int mx, int my) {
@@ -152,6 +160,7 @@ void PlayScene::Hit() {
 void PlayScene::EarnMoney(int money) {
 	this->money += money;
 	UIMoney->Text = std::to_string(this->money);
+	SaveDataHelper();
 }
 void PlayScene::ConstructUI() {
 	// Background
@@ -193,7 +202,7 @@ void PlayScene::ReadDataHelper() {
 	fp.close();
 }
 
-PlayScene::~PlayScene() {
+void PlayScene::SaveDataHelper() {
 	std::string filename = std::string("resources/data.txt");
 	std::fstream fp(filename, std::ios::out);
 	fp << money << std::endl << top_wave;
