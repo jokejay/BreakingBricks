@@ -137,10 +137,9 @@ void PlayScene::EarnMoney(int money) {
 }
 void PlayScene::ConstructUI() {
 	// Background
-	UIGroup->AddNewObject(new Engine::Image("play/sand.png", 1280, 0, 320, 832));
 	// Text
-	UIGroup->AddNewObject(new Engine::Label(std::string("wave ") + std::to_string(wave), "pirulen.ttf", 32, 1294, 0));
-	UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("$") + std::to_string(money), "pirulen.ttf", 24, 1294, 48));
+	UIGroup->AddNewObject(new Engine::Label(std::string("wave ") + std::to_string(wave), "square.ttf", 32, 1294, 0));
+	UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("$") + std::to_string(money), "square.ttf", 24, 1294, 48));
 }
 
 void PlayScene::UIBtnClicked(int id) {
