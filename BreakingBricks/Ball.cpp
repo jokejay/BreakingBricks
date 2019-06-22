@@ -28,84 +28,85 @@ void Ball::Update(float deltaTime) {
 	// TBD: Elastic Collision if Collide with Blocks
 	
 	if (scene->cur_State == PlayScene::State::BALL_RUNNING) {
-		
-		for (auto& it : scene->BrickGroup->GetObjects()) {
-			Brick* brick = dynamic_cast<Brick*>(it);
-			if (Engine::Collider::IsCircleOverlapRect(Position, CollisionRadius, brick->Position, brick->Size.x, brick->Size.y)) {
-				// TBD: You should change your velocity according to the contact surface
-				// If you want, you can design a func. in Collider and call it to simplfy code here
-				float cx = Position.x;
-				float cy = Position.y;
-				Engine::Point rectp1((brick->Position.x), brick->Position.y),
-					rectp2((brick->Position.x) + brick->Size.x, brick->Position.y + brick->Size.y);
+		auto remain_speed = speed;
+		while (remain_speed > 0) {
+			for (auto& it : scene->BrickGroup->GetObjects()) {
+				Brick* brick = dynamic_cast<Brick*>(it);
+				if (Engine::Collider::IsCircleOverlapRect(Position, CollisionRadius, brick->Position, brick->Size.x, brick->Size.y)) {
+					// TBD: You should change your velocity according to the contact surface
+					// If you want, you can design a func. in Collider and call it to simplfy code here
+					float cx = Position.x;
+					float cy = Position.y;
+					Engine::Point rectp1((brick->Position.x), brick->Position.y),
+						rectp2((brick->Position.x) + brick->Size.x, brick->Position.y + brick->Size.y);
 
-				
-				//down
-				if (cx+CollisionRadius > rectp1.x && cx-CollisionRadius < rectp2.x && cy-CollisionRadius < rectp2.y && cy - CollisionRadius > rectp1.y + 0.5*brick->Size.y) {
-					Velocity.y = abs(Velocity.y);
-					//Position.y = rectp2.y + CollisionRadius;
-					Engine::LOG(Engine::INFO) << "down";
-				}
-				//up
-				else if (cx+ CollisionRadius > rectp1.x && cx- CollisionRadius < rectp2.x && cy+ CollisionRadius > rectp1.y && cy + CollisionRadius < rectp1.y + 0.5*brick->Size.y) {
-					Velocity.y = -abs(Velocity.y);
-					//Position.y = rectp1.y - CollisionRadius;
-					Engine::LOG(Engine::INFO) << "up";
-				}
-				//left
-				if (cx+ CollisionRadius > rectp1.x && cy+ CollisionRadius > rectp1.y && cy- CollisionRadius < rectp2.y && cx + CollisionRadius < rectp1.x + 0.5*brick->Size.x) {
-					Velocity.x = -abs(Velocity.x);
-					//Position.x = rectp1.x - CollisionRadius;
-					Engine::LOG(Engine::INFO) << "left";
-				}
-				//right
-				else if (cx- CollisionRadius < rectp2.x && cy+ CollisionRadius > rectp1.y && cy- CollisionRadius < rectp2.y && cx - CollisionRadius > rectp1.x +0.5*brick->Size.x) {
-					Velocity.x = abs(Velocity.x);
-					//Position.x = rectp2.x + CollisionRadius;
-					Engine::LOG(Engine::INFO) << "right";
-				}
-				
-				
 
-				brick->Hit(damage);
-				break;
+					//down
+					if (cx + CollisionRadius > rectp1.x && cx - CollisionRadius < rectp2.x && cy - CollisionRadius < rectp2.y && cy - CollisionRadius > rectp1.y + 0.5 * brick->Size.y) {
+						Velocity.y = abs(Velocity.y);
+						//Position.y = rectp2.y + CollisionRadius;
+						Engine::LOG(Engine::INFO) << "down";
+					}
+					//up
+					else if (cx + CollisionRadius > rectp1.x && cx - CollisionRadius < rectp2.x && cy + CollisionRadius > rectp1.y && cy + CollisionRadius < rectp1.y + 0.5 * brick->Size.y) {
+						Velocity.y = -abs(Velocity.y);
+						//Position.y = rectp1.y - CollisionRadius;
+						Engine::LOG(Engine::INFO) << "up";
+					}
+					//left
+					if (cx + CollisionRadius > rectp1.x && cy + CollisionRadius > rectp1.y && cy - CollisionRadius < rectp2.y && cx + CollisionRadius < rectp1.x + 0.5 * brick->Size.x) {
+						Velocity.x = -abs(Velocity.x);
+						//Position.x = rectp1.x - CollisionRadius;
+						Engine::LOG(Engine::INFO) << "left";
+					}
+					//right
+					else if (cx - CollisionRadius < rectp2.x && cy + CollisionRadius > rectp1.y && cy - CollisionRadius < rectp2.y && cx - CollisionRadius > rectp1.x + 0.5 * brick->Size.x) {
+						Velocity.x = abs(Velocity.x);
+						//Position.x = rectp2.x + CollisionRadius;
+						Engine::LOG(Engine::INFO) << "right";
+					}
+
+
+
+					brick->Hit(damage);
+					break;
+				}
 			}
-		}
-		
 
-		// TBD: If it touches the boundary...
-		if (Position.x - CollisionRadius < 0) {
-			// TBD: You should change the velocity 
-			Velocity.x *= -1;
-			Position.x = CollisionRadius;
-		}
-		//right
-		else if (Position.x + CollisionRadius > 480) {
-			Velocity.x *= -1;
-			Position.x = 480 - CollisionRadius;
-		}
-		//up
-		else if (Position.y - CollisionRadius < 100) {
-			Velocity.y *= -1;
-			Position.y = 100 + CollisionRadius;
-		}
-		//down
-		else if (Position.y + CollisionRadius > 700) {
-			if (!moving)
-				moving = true;
-			else {
-				getPlayScene()->cur_State = PlayScene::State::GENERATING_BRICK;
-				Position.y = 700 - 2*CollisionRadius;
-				moving = false;
-				scene->MotherPosition = Position;
+
+			// TBD: If it touches the boundary...
+			if (Position.x - CollisionRadius < 0) {
+				// TBD: You should change the velocity 
+				Velocity.x *= -1;
+				Position.x = CollisionRadius;
+			}
+			//right
+			else if (Position.x + CollisionRadius > 480) {
+				Velocity.x *= -1;
+				Position.x = 480 - CollisionRadius;
+			}
+			//up
+			else if (Position.y - CollisionRadius < 100) {
+				Velocity.y *= -1;
+				Position.y = 100 + CollisionRadius;
+			}
+			//down
+			else if (Position.y + CollisionRadius > 700) {
+				if (!moving)
+					moving = true;
+				else {
+					getPlayScene()->cur_State = PlayScene::State::GENERATING_BRICK;
+					Position.y = 700 - 2 * CollisionRadius;
+					moving = false;
+					scene->MotherPosition = Position;
+
+				}
 
 			}
-			
-		}
 
-		Position = Position + Velocity * speed;
-		
-			
+			Position = Position + Velocity;
+			remain_speed -= 1;
+		}
 	}
 }
 
