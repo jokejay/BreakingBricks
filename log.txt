@@ -13,24 +13,14 @@
 [INFO] Game initialized
 [INFO] Game start event loop
 [INFO] Loaded Resource<audio>: resources/audios/touch.ogg
-[INFO] Destroyed Resource<image>
-[INFO] Destroyed Resource<image>
-[INFO] Destroyed Resource<image>
-[INFO] Destroyed Resource<image>
-[INFO] Destroyed Resource<image>
-[INFO] Destroyed Resource<audio>
-[INFO] Destroyed Resource<audio>
-[INFO] Loaded Resource<image>: resources/images/play/background.png
-[INFO] Loaded Resource<font>: resources/fonts/square.ttf with size 32
-[INFO] Loaded Resource<font>: resources/fonts/square.ttf with size 24
-[INFO] Loaded Resource<audio>: resources/audios/play.ogg
-[INFO] Changed to play scene
 [INFO] Game Terminating...
 [INFO] Game terminated
 [INFO] Game end
 [INFO] Destroyed Resource<image>
 [INFO] Destroyed Resource<image>
-[INFO] Destroyed Resource<font>
-[INFO] Destroyed Resource<font>
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<image>
+[INFO] Destroyed Resource<image>
 [INFO] Destroyed Resource<audio>
 [INFO] Destroyed Resource<audio>

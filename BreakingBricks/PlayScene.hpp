@@ -32,6 +32,7 @@ public:
 	static const int EndY;
 	static const int BlockTotalW;
 	int wave;
+	int top_wave;
 	static const std::vector<int> code;
 	Engine::Point pos_ball;
 	enum State {
@@ -50,6 +51,8 @@ public:
 	Group* EffectGroup;
 	Group* UIGroup;
 	Engine::Label* UIMoney;
+	Engine::Label* UIWave;
+	Engine::Label* UITop;
 	explicit PlayScene() = default;
 	void Initialize() override;
 	void Update(float deltaTime) override;
@@ -61,7 +64,9 @@ public:
 	void Hit();
 	void EarnMoney(int money);
 	void ConstructUI();
+	void ReadDataHelper();
 	void UIBtnClicked(int id);
+	void BackOnClick(int stage);
 	// void ModifyReadMapTiles();
 };
 #endif // PLAYSCENE_HPP

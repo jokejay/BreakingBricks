@@ -58,17 +58,15 @@ void Ball::Update(float deltaTime) {
 					Position.x = rectp2.x + CollisionRadius;
 				}
 				
+				
+
 				brick->Hit(damage);
 				break;
 			}
 		}
 		
 
-		// TBD: If it touches the boundary...scene->StartY
-		//scene->EndY
-		//0~480
-		//boundary
-		//left
+		// TBD: If it touches the boundary...
 		if (Position.x - CollisionRadius < 0) {
 			// TBD: You should change the velocity 
 			Velocity.x *= -1;

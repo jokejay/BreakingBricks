@@ -1,4 +1,6 @@
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/color.h>
 #include <cmath>
 #include <fstream>
 #include <functional>
@@ -16,6 +18,7 @@
 #include "Label.hpp"
 #include "PlayScene.hpp"
 #include "Sprite.hpp"
+#include "ImageButton.hpp"
 
 #include "Brick.hpp"
 #include "Ball.hpp"
@@ -48,6 +51,7 @@ void PlayScene::Initialize() {
 	AddNewObject(EffectGroup = new Group());
 	// Should support buttons.
 	AddNewControlObject(UIGroup = new Group());
+	ReadDataHelper();
 	ConstructUI();
 	BallGroup->AddNewObject(new Ball(8, 1, MotherPosition, MotherDirection, 10));
 	AudioHelper::PlayBGM("play.ogg");
@@ -60,6 +64,11 @@ void PlayScene::Update(float deltaTime) {
 	}
 	if (cur_State == State::GENERATING_BRICK) {
 		wave += 1;
+		UIWave->Text = std::to_string(wave);
+		if (wave > top_wave) {
+			top_wave = wave;
+			UITop->Text = std::to_string(top_wave);
+		}
 		std::random_device rd;
 		std::default_random_engine gen = std::default_random_engine(rd());
 		std::uniform_int_distribution<int> dis(0, 1);
@@ -96,6 +105,13 @@ void PlayScene::Update(float deltaTime) {
 }
 void PlayScene::Draw() const {
 	IScene::Draw();
+	if (down) {
+		Engine::Point diff = InitPt - FinPt, velo = diff.Normalize();
+		if (diff.Magnitude() < 50 || velo.y > -0.2)
+			return;
+		al_draw_line(MotherPosition.x, MotherPosition.y, MotherPosition.x + velo.x * 100, MotherPosition.y + velo.y*100, 
+			al_map_rgba(255, 255, 255, 150), 5);
+	}
 }
 void PlayScene::OnMouseDown(int button, int mx, int my) {
 	IScene::OnMouseDown(button, mx, my);
@@ -124,6 +140,7 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
 			ball->Velocity = velo;
 		}
 		cur_State = State::BALL_RUNNING;
+		down = false;
 	}
 }
 void PlayScene::OnKeyDown(int keyCode) {
@@ -134,16 +151,42 @@ void PlayScene::Hit() {
 }
 void PlayScene::EarnMoney(int money) {
 	this->money += money;
-	UIMoney->Text = std::string("$") + std::to_string(this->money);
+	UIMoney->Text = std::to_string(this->money);
 }
 void PlayScene::ConstructUI() {
 	// Background
 	// Text
-	UIGroup->AddNewObject(new Engine::Label(std::string("wave ") + std::to_string(wave), "square.ttf", 32, 1294, 0));
-	UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("$") + std::to_string(money), "square.ttf", 24, 1294, 48));
+	Engine::ImageButton* btn;
+	btn = new Engine::ImageButton("play/back.png", "play/back.png", 50, 50, 0, 0, 0.5, 0.5, "touch.ogg");
+	btn->SetOnClickCallback(std::bind(&PlayScene::BackOnClick, this, 1));
+	UIGroup -> AddNewControlObject(btn);
+
+	UIGroup->AddNewObject(UIWave = new Engine::Label(std::to_string(wave), "square.ttf", 70, 240, 52, 255, 255, 255, 255, 0.5, 0.5));
+	UIGroup->AddNewObject(new Engine::Label(std::string("TOP"), "square.ttf", 30, 415, 25, 255, 255, 255, 255, 0.5, 0.5));
+	UIGroup->AddNewObject(UITop = new Engine::Label(std::to_string(top_wave), "square.ttf", 48, 415, 66, 255, 255, 255, 255, 0.5, 0.5));
+	UIGroup->AddNewObject(UIMoney = new Engine::Label(std::to_string(money), "square.ttf", 48, 125, 752, 255, 255, 255, 255, 0.5, 0.5));
+	UIGroup->AddNewObject(new Engine::Image("play/coin.png", 40, 750, 50, 50, 0.5, 0.5));
 }
 
 void PlayScene::UIBtnClicked(int id) {
 	return;
 }
 
+void PlayScene::BackOnClick(int stage) {
+
+}
+
+void PlayScene::ReadDataHelper() {
+	std::string filename = std::string("resources/data.txt");
+	//Read money and topWave file.
+	std::fstream fp(filename, std::ios::in);
+	if (!fp.is_open()) {
+		fp.open(filename, std::ios::out);
+		fp << 200 << std::endl << 0;
+		fp.close();
+		fp.open(filename, std::ios::in);
+	}
+
+	fp >> money >> top_wave;
+	fp.close();
+}
