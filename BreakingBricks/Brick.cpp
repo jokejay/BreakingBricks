@@ -35,11 +35,14 @@ void Brick::Hit(float damage) {
 }
 void Brick::Update(float deltaTime) {
 		float TargetY = PlayScene::StartY + (getPlayScene()->wave - money) * (Size.y + boldness + 6);
+		Moving = false;
 		if (Position.y < TargetY) {
 			Position.y += 10;
+			Moving = true;
 		}
 		if (Position.y > TargetY) {
 			Position.y = TargetY;
+			Moving = true;
 		}
 			
 		LifeUI->Position.x = Position.x + 0.5 * Size.x;

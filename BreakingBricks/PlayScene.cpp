@@ -67,7 +67,29 @@ void PlayScene::Update(float deltaTime) {
 			if(dis(gen))
 				BrickGroup->AddNewObject(new Brick(StartX + i * BlockTotalW, StartY - BlockHeight - 6, wave));
 		}
-		cur_State = SET_ANGLE;
+		cur_State = MOVING_BRICK;
+	}
+	else if (cur_State == State::MOVING_BRICK) {
+		bool finish_moving = true;
+		for (auto& it : BrickGroup->GetObjects()) {
+			Brick* brick = dynamic_cast<Brick*>(it);
+			if (brick->Moving) {
+				finish_moving = false;
+				break;
+			}
+		}
+		if (finish_moving) {
+			bool get_end = false;
+			for (auto& it : BrickGroup->GetObjects()) {
+				Brick* brick = dynamic_cast<Brick*>(it);
+				if (brick->Position.y + 2 * BlockHeight > EndY) {
+					get_end = true;
+					break;
+				}
+			}
+			if (!get_end)
+				cur_State = SET_ANGLE;
+		}
 	}
 	
 }
