@@ -22,10 +22,12 @@ PlayScene* Brick::getPlayScene() {
 Brick::Brick(float x, float y, float hp) :
 	Engine::IObject(x, y, PlayScene::BlockWidth, PlayScene::BlockHeight), speed(20), hp(hp), money(hp) {
 	Moving = 0;
+	shock = 0;
 	LifeUI = new Engine::Label(std::to_string(static_cast<int>(hp)), "square.ttf", 20, x+0.5*Size.x, y+0.5*Size.y, StartR, StartG, StartB, 255, 0.5, 0.5);
 }
 void Brick::Hit(float damage) {
 	hp -= damage;
+	shock += 3;
 	LifeUI->Text = std::to_string(static_cast<int>(hp));
 	AudioHelper::PlayAudio("collision.ogg");
 	if (hp <= 0) {
@@ -47,8 +49,14 @@ void Brick::Update(float deltaTime) {
 			
 		LifeUI->Position.x = Position.x + 0.5 * Size.x;
 		LifeUI->Position.y = Position.y + 0.5 * Size.y;
+
+		if (shock > 0)
+			shock--;
 }
 void Brick::Draw() const {
+	if (shock > 0) {
+		return;
+	}
 	int DiffR = EndR - StartR, DiffG = EndG - StartG, DiffB = EndB - StartB;
 	float Diff = 1 - hp / money;
 	al_draw_rectangle(Position.x, Position.y, Position.x + Size.x, Position.y + Size.y,

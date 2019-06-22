@@ -92,7 +92,7 @@ namespace Engine {
 		/// <param name="title">Window's title text.</param>
 		/// <param name="icon">Window's icon image path.</param>
 		void Start(const std::string& firstSceneName, int fps = 60, int screenW = 800, int screenH = 600, int reserveSamples = 10,
-				   const char* title = "Tower Defense (I2P(II)_2019 Mini Project 2))",
+				   const char* title = "Breaking Bricks (I2P(II)_2019 Final Project))",
 				   const char* icon = "icon.png");
 		/// <summary>
 		/// Add a new scene to the game. Should only be called once for each scene.

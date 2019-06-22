@@ -4,11 +4,7 @@
 // Returns program exit code.
 #include "GameEngine.hpp"
 #include "LOG.hpp"
-//#include "LoseScene.hpp"
 #include "PlayScene.hpp"
-//#include "ShopScene.hpp"
-//#include "StageSelectScene.hpp"
-//#include "WinScene.hpp"
 #include "StartScene.hpp"
 
 int main(int argc, char **argv) {

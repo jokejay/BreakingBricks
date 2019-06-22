@@ -96,6 +96,7 @@ void PlayScene::Update(float deltaTime) {
 				if (brick->Position.y + 2 * BlockHeight > EndY) {
 					get_end = true;
 					cur_State = FINISH;
+					AudioHelper::PlayAudio("gameover.ogg");
 					break;
 				}
 			}
@@ -166,7 +167,7 @@ void PlayScene::ConstructUI() {
 	// Background
 	// Text
 	Engine::ImageButton* btn;
-	btn = new Engine::ImageButton("play/back.png", "play/back.png", 50, 50, 0, 0, 0.5, 0.5, "button.ogg");
+	btn = new Engine::ImageButton("play/back.png", "play/back1.png", 50, 50, 0, 0, 0.5, 0.5, "button.ogg");
 	btn->SetOnClickCallback(std::bind(&PlayScene::BackOnClick, this, 1));
 	UIGroup -> AddNewControlObject(btn);
 
@@ -207,5 +208,5 @@ void PlayScene::SaveDataHelper() {
 	std::fstream fp(filename, std::ios::out);
 	fp << money << std::endl << top_wave;
 	fp.close();
-	Engine::LOG(Engine::INFO) << "saved";
+	
 }

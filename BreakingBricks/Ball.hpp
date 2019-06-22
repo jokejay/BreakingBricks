@@ -15,7 +15,6 @@ class Ball : public Engine::IObject {
 protected:
 	float speed;
 	float damage;
-	bool down;
 	PlayScene* getPlayScene();
 public:
 	bool moving;

@@ -13,6 +13,8 @@
 #include "Sprite.hpp"
 #include "cmath"
 
+#include "LOG.hpp"
+
 PlayScene* Ball::getPlayScene() {
 	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
@@ -36,26 +38,31 @@ void Ball::Update(float deltaTime) {
 				float cy = Position.y;
 				Engine::Point rectp1((brick->Position.x), brick->Position.y),
 					rectp2((brick->Position.x) + brick->Size.x, brick->Position.y + brick->Size.y);
+
 				
 				//down
-				if (cx+CollisionRadius > rectp1.x && cx-CollisionRadius < rectp2.x && cy-CollisionRadius < rectp2.y && cy + CollisionRadius > rectp1.y + brick->Size.y) {
+				if (cx+CollisionRadius > rectp1.x && cx-CollisionRadius < rectp2.x && cy-CollisionRadius < rectp2.y && cy - CollisionRadius > rectp1.y + 0.5*brick->Size.y) {
 					Velocity.y = abs(Velocity.y);
-					Position.y = rectp2.y + CollisionRadius;
+					//Position.y = rectp2.y + CollisionRadius;
+					Engine::LOG(Engine::INFO) << "down";
 				}
 				//up
-				else if (cx+ CollisionRadius > rectp1.x && cx- CollisionRadius < rectp2.x && cy+ CollisionRadius > rectp1.y && cy + CollisionRadius < rectp1.y + brick->Size.y) {
+				else if (cx+ CollisionRadius > rectp1.x && cx- CollisionRadius < rectp2.x && cy+ CollisionRadius > rectp1.y && cy + CollisionRadius < rectp1.y + 0.5*brick->Size.y) {
 					Velocity.y = -abs(Velocity.y);
-					Position.y = rectp1.y - CollisionRadius;
+					//Position.y = rectp1.y - CollisionRadius;
+					Engine::LOG(Engine::INFO) << "up";
 				}
 				//left
-				if (cx+ CollisionRadius > rectp1.x && cy+ CollisionRadius < rectp1.y && cy- CollisionRadius > rectp2.y && cx + CollisionRadius < rectp1.x + brick->Size.x) {
+				if (cx+ CollisionRadius > rectp1.x && cy+ CollisionRadius > rectp1.y && cy- CollisionRadius < rectp2.y && cx + CollisionRadius < rectp1.x + 0.5*brick->Size.x) {
 					Velocity.x = -abs(Velocity.x);
-					Position.x = rectp1.x - CollisionRadius;
+					//Position.x = rectp1.x - CollisionRadius;
+					Engine::LOG(Engine::INFO) << "left";
 				}
 				//right
-				else if (cx- CollisionRadius < rectp2.x && cy+ CollisionRadius < rectp1.y && cy- CollisionRadius > rectp2.y && cx + CollisionRadius > rectp1.x + brick->Size.x) {
+				else if (cx- CollisionRadius < rectp2.x && cy+ CollisionRadius > rectp1.y && cy- CollisionRadius < rectp2.y && cx - CollisionRadius > rectp1.x +0.5*brick->Size.x) {
 					Velocity.x = abs(Velocity.x);
-					Position.x = rectp2.x + CollisionRadius;
+					//Position.x = rectp2.x + CollisionRadius;
+					Engine::LOG(Engine::INFO) << "right";
 				}
 				
 				
@@ -97,9 +104,6 @@ void Ball::Update(float deltaTime) {
 		}
 
 		Position = Position + Velocity * speed;
-		// TBD: 
-		//	scene->BlockHeight;
-		//scene->MotherPosition;
 		
 			
 	}
