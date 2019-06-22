@@ -21,9 +21,9 @@ protected:
 	int money;
 	int SpeedMult;
 	float down;
-	Engine::Point MotherDirection, MotherPosition;
 	Engine::Point InitPt, FinPt;
 public:
+	Engine::Point MotherDirection, MotherPosition;
 	static bool DebugMode;
 	static const std::vector<Engine::Point> directions;
 	static const int MapWidth, MapHeight;

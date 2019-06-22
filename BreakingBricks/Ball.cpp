@@ -26,7 +26,7 @@ void Ball::Update(float deltaTime) {
 			getPlayScene()->cur_State = PlayScene::State::GENERATING_BRICK;
 		Position = Position + Velocity*speed;
 	}
-	/*
+	
 	// TBD: Elastic Collision if Collide with Blocks
 	
 	if (scene->cur_State == PlayScene::State::BALL_RUNNING) {
@@ -44,8 +44,15 @@ void Ball::Update(float deltaTime) {
 		// TBD: If it touches the boundary...
 		if (...) {
 			// TBD: You should change change the velocity 
+			scene->StartY
+			scene->EndY
+			0~480
 		}
-	}*/
+
+		// TBD: 
+			scene->BlockHeight;
+			scene->MotherPosition
+	}
 }
 
 void Ball::Draw() const {
