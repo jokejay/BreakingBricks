@@ -38,11 +38,13 @@ void PlayScene::Initialize() {
 	// TODO 5 (2/2): There's a cheat code in this file. Try to find it.
 	ticks = 0;
 	balls = 1;
+	added_balls = 0;
+	return_balls = 0;
 	money = 150;
 	SpeedMult = 1;
 	wave = 0;
 	cur_State = State::GENERATING_BRICK;
-	MotherPosition = Engine::Point(240, EndY - 10);
+	MotherPosition = Engine::Point(240, EndY - 10 - 1);
 	MotherDirection = Engine::Point(0, -1);
 	// Add groups from bottom to top.
 	AddNewObject(new Engine::Image("play/background.png", 0, 0, 0, 0, 0, 0));
@@ -62,7 +64,17 @@ void PlayScene::Update(float deltaTime) {
 	for (int i = 0; i < SpeedMult; i++) {
 		IScene::Update(deltaTime);
 	}
-	if (cur_State == State::GENERATING_BRICK) {
+	if (cur_State == State::BALL_RUNNING) {
+		//Engine::LOG(Engine::INFO) << "ReturnBalls " + std::to_string(return_balls);
+		if (return_balls == balls) {
+			Engine::LOG(Engine::INFO) << "all balls are return " + std::to_string(balls);
+			return_balls = 0;
+			cur_State = State::GENERATING_BRICK;
+			for(;added_balls > 0; added_balls--, balls++)
+				BallGroup->AddNewObject(new Ball(8, 1, MotherPosition, MotherDirection, 10));
+		}
+	}
+	else if (cur_State == State::GENERATING_BRICK) {
 		wave += 1;
 		UIWave->Text = std::to_string(wave);
 		if (wave > top_wave) {
@@ -100,8 +112,11 @@ void PlayScene::Update(float deltaTime) {
 					break;
 				}
 			}
-			if (!get_end)
+			if (!get_end) {
 				cur_State = SET_ANGLE;
+				added_balls++;
+			}
+				
 		}
 	}
 	
@@ -144,12 +159,17 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
 		Engine::Point diff = InitPt - FinPt, velo = diff.Normalize();
 		if (diff.Magnitude() < 50 || velo.y > -0.2)
 			return;
+		int EmitBalls = 0;
 		for (auto& it : BallGroup->GetObjects()) {
 			Ball* ball = dynamic_cast<Ball*>(it);
 			ball->Position = MotherPosition;
 			ball->Velocity = velo;
+			ball->shock = EmitBalls * 20;
+			ball->active = true;
+			EmitBalls++;
 		}
 		cur_State = State::BALL_RUNNING;
+		MotherPosition = Engine::Point(-1, -1);
 	}
 }
 void PlayScene::OnKeyDown(int keyCode) {
@@ -209,4 +229,8 @@ void PlayScene::SaveDataHelper() {
 	fp << money << std::endl << top_wave;
 	fp.close();
 	
+}
+
+void PlayScene::ReturnBall() {
+	return_balls++;
 }

@@ -18,6 +18,8 @@ namespace Engine {
 class PlayScene final : public Engine::IScene {
 protected:
 	int balls;
+	int added_balls;
+	int return_balls;
 	int money;
 	int SpeedMult;
 	float down;
@@ -68,6 +70,7 @@ public:
 	void UIBtnClicked(int id);
 	void BackOnClick(int stage);
 	void SaveDataHelper();
+	void ReturnBall();
 	// void ModifyReadMapTiles();
 };
 #endif // PLAYSCENE_HPP

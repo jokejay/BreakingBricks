@@ -17,7 +17,7 @@ protected:
 	float damage;
 	PlayScene* getPlayScene();
 public:
-	bool moving;
+	bool active;
 	int shock;
 	float CollisionRadius;
 	Engine::Point Velocity;

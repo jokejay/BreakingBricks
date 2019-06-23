@@ -21,17 +21,22 @@ PlayScene* Ball::getPlayScene() {
 Ball::Ball(float speed, float damage, Engine::Point position, Engine::Point velocity, float radius) :
 	IObject(position.x, position.y), speed(speed), damage(damage), CollisionRadius(radius) {
 	Velocity = velocity.Normalize() * speed;
-	moving = false;
+	active = false;
+	shock = 0;
 }
 void Ball::Update(float deltaTime) {
 	PlayScene* scene = getPlayScene();
 	// TBD: Elastic Collision if Collide with Blocks
 	
 	if (scene->cur_State == PlayScene::State::BALL_RUNNING) {
-		/*if (shock > 0) {
+		if (!active) {
+			//Engine::LOG(Engine::INFO) << "notactive";
+			return;
+		}
+		if (shock > 0) {
 			shock -= 1;
 			return;
-		}*/
+		}
 		auto remain_speed = speed;
 		while (remain_speed > 0) {
 			for (auto& it : scene->BrickGroup->GetObjects()) {
@@ -96,16 +101,37 @@ void Ball::Update(float deltaTime) {
 			}
 			//down
 			else if (Position.y + CollisionRadius > 700) {
-				if (!moving)
-					moving = true;
-				else {
-					getPlayScene()->cur_State = PlayScene::State::GENERATING_BRICK;
-					Position.y = 700 - CollisionRadius - 1;
-					moving = false;
+				Position.y = 700 - CollisionRadius - 1;
+				if (scene->MotherPosition.y == -1) {
 					scene->MotherPosition = Position;
-
+					active = false;
+					scene->ReturnBall();
+					Engine::LOG(Engine::INFO) << "return a ball 1";
+					return;
 				}
-
+				else {
+					Velocity = (scene->MotherPosition.x > Position.x) ? Engine::Point(1, 0) : Engine::Point(-1, 0);
+				}
+			}
+			else if (Position.y + CollisionRadius + 1 == 700) {
+				if (Velocity.x == 1) {
+					if (Position.x + Velocity.x > scene->MotherPosition.x) {
+						Position.x = scene->MotherPosition.x;
+						active = false;
+						scene->ReturnBall();
+						Engine::LOG(Engine::INFO) << "return a ball 2";
+						return;
+					}
+				}
+				else if(Velocity.x == -1){
+					if (Position.x + Velocity.x < scene->MotherPosition.x) {
+						Position.x = scene->MotherPosition.x;
+						active = false;
+						scene->ReturnBall();
+						Engine::LOG(Engine::INFO) << "return a ball 3";
+						return;
+					}
+				}
 			}
 
 			Position = Position + Velocity;
