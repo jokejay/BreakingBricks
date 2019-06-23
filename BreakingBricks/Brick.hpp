@@ -17,6 +17,7 @@ protected:
 	float hp;
 	int money;
 	int shock;
+	float diff;
 	PlayScene* getPlayScene();
 	Engine::Label* LifeUI;
 	

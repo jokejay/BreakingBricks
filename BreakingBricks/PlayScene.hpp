@@ -8,7 +8,6 @@
 #include "Point.hpp"
 #include "Brick.hpp"
 
-class Turret;
 namespace Engine {
 	class Group;
 	class Image;

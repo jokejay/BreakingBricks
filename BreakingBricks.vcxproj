@@ -163,6 +163,7 @@
     <ClCompile Include="BreakingBricks\PlayScene.cpp" />
     <ClCompile Include="BreakingBricks\Point.cpp" />
     <ClCompile Include="BreakingBricks\Resources.cpp" />
+    <ClCompile Include="BreakingBricks\ShopScene.cpp" />
     <ClCompile Include="BreakingBricks\Sprite.cpp" />
     <ClCompile Include="BreakingBricks\StartScene.cpp" />
   </ItemGroup>
@@ -184,6 +185,7 @@
     <ClInclude Include="BreakingBricks\PlayScene.hpp" />
     <ClInclude Include="BreakingBricks\Point.hpp" />
     <ClInclude Include="BreakingBricks\Resources.hpp" />
+    <ClInclude Include="BreakingBricks\ShopScene.hpp" />
     <ClInclude Include="BreakingBricks\Sprite.hpp" />
     <ClInclude Include="BreakingBricks\StartScene.hpp" />
   </ItemGroup>

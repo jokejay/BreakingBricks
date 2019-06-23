@@ -77,6 +77,9 @@
     <ClCompile Include="BreakingBricks\AudioHelper.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="BreakingBricks\ShopScene.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BreakingBricks\Brick.hpp">
@@ -135,6 +138,9 @@
     </ClInclude>
     <ClInclude Include="BreakingBricks\AudioHelper.hpp">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakingBricks\ShopScene.hpp">
+      <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,12 +6,13 @@
 #include "LOG.hpp"
 #include "PlayScene.hpp"
 #include "StartScene.hpp"
+#include "ShopScene.hpp"
 
 int main(int argc, char **argv) {
 	Engine::LOG::SetConfig(true);
 	Engine::GameEngine& game = Engine::GameEngine::GetInstance();
 	game.AddNewScene("play", new PlayScene());
-	//game.AddNewScene("shop", new ShopScene());
+	game.AddNewScene("shop", new ShopScene());
 	// TODO 1 (1/2): Add a New Scene here and change the start scene below.
 	game.AddNewScene("start", new StartScene());
 	game.Start("start", 60, 480, 800);

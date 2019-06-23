@@ -58,25 +58,25 @@ void Ball::Update(float deltaTime) {
 					if (cx + CollisionRadius > rectp1.x && cx - CollisionRadius < rectp2.x && cy - CollisionRadius < rectp2.y && cy - CollisionRadius > rectp1.y + 0.5 * brick->Size.y) {
 						Velocity.y = abs(Velocity.y);
 						//Position.y = rectp2.y + CollisionRadius;
-						Engine::LOG(Engine::INFO) << "down";
+						//Engine::LOG(Engine::INFO) << "down";
 					}
 					//up
 					else if (cx + CollisionRadius > rectp1.x && cx - CollisionRadius < rectp2.x && cy + CollisionRadius > rectp1.y && cy + CollisionRadius < rectp1.y + 0.5 * brick->Size.y) {
 						Velocity.y = -abs(Velocity.y);
 						//Position.y = rectp1.y - CollisionRadius;
-						Engine::LOG(Engine::INFO) << "up";
+						//Engine::LOG(Engine::INFO) << "up";
 					}
 					//left
 					if (cx + CollisionRadius > rectp1.x && cy + CollisionRadius > rectp1.y && cy - CollisionRadius < rectp2.y && cx + CollisionRadius < rectp1.x + 0.5 * brick->Size.x) {
 						Velocity.x = -abs(Velocity.x);
 						//Position.x = rectp1.x - CollisionRadius;
-						Engine::LOG(Engine::INFO) << "left";
+						//Engine::LOG(Engine::INFO) << "left";
 					}
 					//right
 					else if (cx - CollisionRadius < rectp2.x && cy + CollisionRadius > rectp1.y && cy - CollisionRadius < rectp2.y && cx - CollisionRadius > rectp1.x + 0.5 * brick->Size.x) {
 						Velocity.x = abs(Velocity.x);
 						//Position.x = rectp2.x + CollisionRadius;
-						Engine::LOG(Engine::INFO) << "right";
+						//Engine::LOG(Engine::INFO) << "right";
 					}
 
 
@@ -110,29 +110,29 @@ void Ball::Update(float deltaTime) {
 					scene->MotherPosition = Position;
 					active = false;
 					scene->ReturnBall();
-					Engine::LOG(Engine::INFO) << "return a ball 1";
+					//Engine::LOG(Engine::INFO) << "return a ball 1";
 					return;
 				}
 				else {
-					Velocity = (scene->MotherPosition.x > Position.x) ? Engine::Point(1, 0) : Engine::Point(-1, 0);
+					Velocity = (scene->MotherPosition.x > Position.x) ? Engine::Point(2, 0) : Engine::Point(-2, 0);
 				}
 			}
 			else if (Position.y + CollisionRadius + 1 == 700) {
-				if (Velocity.x == 1) {
+				if (Velocity.x == 2) {
 					if (Position.x + Velocity.x > scene->MotherPosition.x) {
 						Position.x = scene->MotherPosition.x;
 						active = false;
 						scene->ReturnBall();
-						Engine::LOG(Engine::INFO) << "return a ball 2";
+						//Engine::LOG(Engine::INFO) << "return a ball 2";
 						return;
 					}
 				}
-				else if(Velocity.x == -1){
+				else if(Velocity.x == -2){
 					if (Position.x + Velocity.x < scene->MotherPosition.x) {
 						Position.x = scene->MotherPosition.x;
 						active = false;
 						scene->ReturnBall();
-						Engine::LOG(Engine::INFO) << "return a ball 3";
+						//Engine::LOG(Engine::INFO) << "return a ball 3";
 						return;
 					}
 				}

@@ -73,7 +73,7 @@ void PlayScene::Update(float deltaTime) {
 			UIBalls->Text = std::string("");
 		}
 		if (return_balls == balls) {
-			Engine::LOG(Engine::INFO) << "all balls are return " + std::to_string(balls);
+			//Engine::LOG(Engine::INFO) << "all balls are return " + std::to_string(balls);
 			return_balls = 0;
 			cur_State = State::GENERATING_BRICK;
 			for(;added_balls > 0; added_balls--, balls++)
@@ -140,7 +140,7 @@ void PlayScene::Draw() const {
 	}
 	if (cur_State == FINISH) {
 		al_draw_filled_rectangle(50, 300, 430, 500, al_map_rgb(Brick::StartR, Brick::StartG, Brick::StartB));
-		static Engine::Label* Banner = new Engine::Label("GaveOver!", "square.ttf", 72, 240, 450, 255, 255,
+		static Engine::Label* Banner = new Engine::Label("GAMEOVER!", "square.ttf", 72, 240, 450, 255, 255,
 			255, 255, 0.5, 1);
 		Banner->Draw();
 	}
@@ -247,5 +247,5 @@ void PlayScene::ReturnBall() {
 
 void PlayScene::EmitBall() {
 	emit_balls++;
-	Engine::LOG(Engine::INFO) << "a ball emitted";
+	//Engine::LOG(Engine::INFO) << "a ball emitted";
 }
