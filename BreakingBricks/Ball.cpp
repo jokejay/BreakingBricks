@@ -37,6 +37,10 @@ void Ball::Update(float deltaTime) {
 			shock -= 1;
 			return;
 		}
+		else if(shock == 0){
+			scene->EmitBall();
+			shock = -1;
+		}
 		auto remain_speed = speed;
 		while (remain_speed > 0) {
 			for (auto& it : scene->BrickGroup->GetObjects()) {

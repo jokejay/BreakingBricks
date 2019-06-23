@@ -1,5 +1,5 @@
-#ifndef BULLET_HPP
-#define BULLET_HPP
+#ifndef BALL_HPP
+#define BALL_HPP
 #include <string>
 
 #include "Sprite.hpp"
@@ -25,4 +25,4 @@ public:
 	void Update(float deltaTime) override;
 	void Draw() const override;
 };
-#endif // BULLET_HPP
+#endif // BALL_HPP

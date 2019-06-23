@@ -40,6 +40,7 @@ void PlayScene::Initialize() {
 	balls = 1;
 	added_balls = 0;
 	return_balls = 0;
+	emit_balls = 0;
 	money = 150;
 	SpeedMult = 1;
 	wave = 0;
@@ -65,13 +66,20 @@ void PlayScene::Update(float deltaTime) {
 		IScene::Update(deltaTime);
 	}
 	if (cur_State == State::BALL_RUNNING) {
-		//Engine::LOG(Engine::INFO) << "ReturnBalls " + std::to_string(return_balls);
+		if (emit_balls != balls) {
+			UIBalls->Text = std::string("x") + std::to_string(balls - emit_balls);
+		}
+		else {
+			UIBalls->Text = std::string("");
+		}
 		if (return_balls == balls) {
 			Engine::LOG(Engine::INFO) << "all balls are return " + std::to_string(balls);
 			return_balls = 0;
 			cur_State = State::GENERATING_BRICK;
 			for(;added_balls > 0; added_balls--, balls++)
 				BallGroup->AddNewObject(new Ball(8, 1, MotherPosition, MotherDirection, 10));
+			UIBalls->Text = std::string("x") + std::to_string(balls);
+			UIBalls->Position.x = MotherPosition.x;
 		}
 	}
 	else if (cur_State == State::GENERATING_BRICK) {
@@ -164,10 +172,11 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
 			Ball* ball = dynamic_cast<Ball*>(it);
 			ball->Position = MotherPosition;
 			ball->Velocity = velo;
-			ball->shock = EmitBalls * 20;
+			ball->shock = EmitBalls * 5;
 			ball->active = true;
 			EmitBalls++;
 		}
+		emit_balls = 0;
 		cur_State = State::BALL_RUNNING;
 		MotherPosition = Engine::Point(-1, -1);
 	}
@@ -194,8 +203,9 @@ void PlayScene::ConstructUI() {
 	UIGroup->AddNewObject(UIWave = new Engine::Label(std::to_string(wave), "square.ttf", 70, 240, 52, 255, 255, 255, 255, 0.5, 0.5));
 	UIGroup->AddNewObject(new Engine::Label(std::string("TOP"), "square.ttf", 30, 415, 25, 255, 255, 255, 255, 0.5, 0.5));
 	UIGroup->AddNewObject(UITop = new Engine::Label(std::to_string(top_wave), "square.ttf", 48, 415, 66, 255, 255, 255, 255, 0.5, 0.5));
-	UIGroup->AddNewObject(UIMoney = new Engine::Label(std::to_string(money), "square.ttf", 48, 125, 752, 255, 255, 255, 255, 0.5, 0.5));
-	UIGroup->AddNewObject(new Engine::Image("play/coin.png", 40, 750, 50, 50, 0.5, 0.5));
+	UIGroup->AddNewObject(UIMoney = new Engine::Label(std::to_string(money), "square.ttf", 40, 110, 752, 255, 255, 255, 255, 0.5, 0.5));
+	UIGroup->AddNewObject(new Engine::Image("play/coin.png", 40, 750, 30, 30, 0.5, 0.5));
+	UIGroup->AddNewObject(UIBalls = new Engine::Label(std::string("x") + std::to_string(balls), "square.ttf", 24, MotherPosition.x, EndY + 10, 255, 255, 255, 255, 0.5, 0));
 }
 
 void PlayScene::UIBtnClicked(int id) {
@@ -233,4 +243,9 @@ void PlayScene::SaveDataHelper() {
 
 void PlayScene::ReturnBall() {
 	return_balls++;
+}
+
+void PlayScene::EmitBall() {
+	emit_balls++;
+	Engine::LOG(Engine::INFO) << "a ball emitted";
 }
