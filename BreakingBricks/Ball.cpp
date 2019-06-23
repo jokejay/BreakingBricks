@@ -28,6 +28,10 @@ void Ball::Update(float deltaTime) {
 	// TBD: Elastic Collision if Collide with Blocks
 	
 	if (scene->cur_State == PlayScene::State::BALL_RUNNING) {
+		/*if (shock > 0) {
+			shock -= 1;
+			return;
+		}*/
 		auto remain_speed = speed;
 		while (remain_speed > 0) {
 			for (auto& it : scene->BrickGroup->GetObjects()) {
@@ -96,7 +100,7 @@ void Ball::Update(float deltaTime) {
 					moving = true;
 				else {
 					getPlayScene()->cur_State = PlayScene::State::GENERATING_BRICK;
-					Position.y = 700 - 2 * CollisionRadius;
+					Position.y = 700 - CollisionRadius - 1;
 					moving = false;
 					scene->MotherPosition = Position;
 
