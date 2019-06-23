@@ -80,6 +80,9 @@
     <ClCompile Include="BreakingBricks\ShopScene.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
+    <ClCompile Include="BreakingBricks\HardBrick.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BreakingBricks\Brick.hpp">
@@ -140,6 +143,9 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="BreakingBricks\ShopScene.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakingBricks\HardBrick.hpp">
       <Filter>標頭檔</Filter>
     </ClInclude>
   </ItemGroup>

@@ -22,7 +22,7 @@ protected:
 	Engine::Label* LifeUI;
 	
 public:
-	const static int StartR, StartG, StartB , EndR, EndG, EndB;
+	int StartR, StartG, StartB , EndR, EndG, EndB;
 	static const int boldness;
 	bool Moving;
 	Brick(float x, float y, float hp);

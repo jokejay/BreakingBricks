@@ -23,6 +23,7 @@
 
 #include "Brick.hpp"
 #include "Ball.hpp"
+#include "HardBrick.hpp"
 
 bool PlayScene::DebugMode = false;
 const std::vector<Engine::Point> PlayScene::directions = { Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
@@ -93,10 +94,31 @@ void PlayScene::Update(float deltaTime) {
 		std::random_device rd;
 		std::default_random_engine gen = std::default_random_engine(rd());
 		std::uniform_int_distribution<int> dis(0, 1);
+		std::vector<int> lineBrick;
 
 		for (int i = 0; i < MapWidth; i++) {
-			if(dis(gen))
-				BrickGroup->AddNewObject(new Brick(StartX + i * BlockTotalW, StartY - BlockHeight - 6, wave));
+			if (dis(gen)) {
+				if (wave % 10 == 0) {
+					lineBrick.push_back(2);
+				}
+				else {
+					lineBrick.push_back(1);
+				}
+			}
+			else {
+				lineBrick.push_back(0);
+			}
+		}
+		for (int i = 0; i < MapWidth; i++) {
+			switch (lineBrick.back()) {
+				case 1:
+					BrickGroup->AddNewObject(new Brick(StartX + i * BlockTotalW, StartY - BlockHeight - 6, wave));
+					break;
+				case 2:
+					BrickGroup->AddNewObject(new HardBrick(StartX + i * BlockTotalW, StartY - BlockHeight - 6, wave));
+					break;
+			}
+			lineBrick.pop_back();
 		}
 		cur_State = MOVING_BRICK;
 	}
@@ -139,7 +161,7 @@ void PlayScene::Draw() const {
 			al_map_rgba(255, 255, 255, 150), 5);
 	}
 	if (cur_State == FINISH) {
-		al_draw_filled_rectangle(50, 300, 430, 500, al_map_rgb(Brick::StartR, Brick::StartG, Brick::StartB));
+		al_draw_filled_rectangle(50, 300, 430, 500, al_map_rgb(232, 32, 105));
 		static Engine::Label* Banner = new Engine::Label("GAMEOVER!", "square.ttf", 72, 240, 450, 255, 255,
 			255, 255, 0.5, 1);
 		Banner->Draw();

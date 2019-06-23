@@ -13,7 +13,7 @@
 #include "PlayScene.hpp"
 
 const int Brick::boldness = 5;
-const int Brick::StartR = 232, Brick::StartG = 32, Brick::StartB = 105, Brick::EndR = 246, Brick::EndG = 236, Brick::EndB = 112;
+
 
 PlayScene* Brick::getPlayScene() {
 	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
@@ -24,6 +24,7 @@ Brick::Brick(float x, float y, float hp) :
 	Moving = 0;
 	shock = 0;
 	diff = 0;
+	StartR = 232; StartG = 32; StartB = 105; EndR = 246; EndG = 236; EndB = 112;
 	LifeUI = new Engine::Label(std::to_string(static_cast<int>(hp)), "square.ttf", 20, x+0.5*Size.x, y+0.5*Size.y, StartR, StartG, StartB, 255, 0.5, 0.5);
 }
 void Brick::Hit(float damage) {

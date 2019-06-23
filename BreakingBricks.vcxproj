@@ -152,6 +152,7 @@
     <ClCompile Include="BreakingBricks\Collider.cpp" />
     <ClCompile Include="BreakingBricks\GameEngine.cpp" />
     <ClCompile Include="BreakingBricks\Group.cpp" />
+    <ClCompile Include="BreakingBricks\HardBrick.cpp" />
     <ClCompile Include="BreakingBricks\IControl.cpp" />
     <ClCompile Include="BreakingBricks\Image.cpp" />
     <ClCompile Include="BreakingBricks\ImageButton.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="BreakingBricks\Collider.hpp" />
     <ClInclude Include="BreakingBricks\GameEngine.hpp" />
     <ClInclude Include="BreakingBricks\Group.hpp" />
+    <ClInclude Include="BreakingBricks\HardBrick.hpp" />
     <ClInclude Include="BreakingBricks\IControl.hpp" />
     <ClInclude Include="BreakingBricks\Image.hpp" />
     <ClInclude Include="BreakingBricks\ImageButton.hpp" />
