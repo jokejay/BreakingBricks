@@ -29,7 +29,7 @@ Brick::Brick(float x, float y, float hp) :
 }
 void Brick::Hit(float damage) {
 	hp -= damage;
-	shock += 2;
+	shock = 2;
 	LifeUI->Text = std::to_string(static_cast<int>(hp));
 	AudioHelper::PlayAudio("collision.ogg");
 	if (hp <= 0) {

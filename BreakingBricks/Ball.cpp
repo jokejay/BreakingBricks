@@ -20,7 +20,7 @@ PlayScene* Ball::getPlayScene() {
 }
 Ball::Ball(float speed, float damage, Engine::Point position, Engine::Point velocity, float radius) :
 	IObject(position.x, position.y), speed(speed), damage(damage), CollisionRadius(radius) {
-	Velocity = velocity.Normalize() * speed;
+	Velocity = velocity.Normalize();
 	active = false;
 	shock = 0;
 }
@@ -48,39 +48,78 @@ void Ball::Update(float deltaTime) {
 				if (Engine::Collider::IsCircleOverlapRect(Position, CollisionRadius, brick->Position, brick->Size.x, brick->Size.y)) {
 					// TBD: You should change your velocity according to the contact surface
 					// If you want, you can design a func. in Collider and call it to simplfy code here
+
 					float cx = Position.x;
 					float cy = Position.y;
-					Engine::Point rectp1((brick->Position.x), brick->Position.y),
-						rectp2((brick->Position.x) + brick->Size.x, brick->Position.y + brick->Size.y);
+					if (!scene->experimentalEngine) {
+						Engine::Point rectp1((brick->Position.x), brick->Position.y),
+							rectp2((brick->Position.x) + brick->Size.x, brick->Position.y + brick->Size.y);
 
 
-					//down
-					if (cx + CollisionRadius > rectp1.x && cx - CollisionRadius < rectp2.x && cy - CollisionRadius < rectp2.y && cy - CollisionRadius > rectp1.y + 0.5 * brick->Size.y) {
-						Velocity.y = abs(Velocity.y);
-						//Position.y = rectp2.y + CollisionRadius;
-						//Engine::LOG(Engine::INFO) << "down";
+						//down
+						if (cx + CollisionRadius > rectp1.x && cx - CollisionRadius < rectp2.x && cy - CollisionRadius < rectp2.y && cy - CollisionRadius > rectp1.y + 0.5 * brick->Size.y) {
+							Velocity.y = abs(Velocity.y);
+							//Position.y = rectp2.y + CollisionRadius;
+							//Engine::LOG(Engine::INFO) << "down";
+						}
+						//up
+						else if (cx + CollisionRadius > rectp1.x && cx - CollisionRadius < rectp2.x && cy + CollisionRadius > rectp1.y && cy + CollisionRadius < rectp1.y + 0.5 * brick->Size.y) {
+							Velocity.y = -abs(Velocity.y);
+							//Position.y = rectp1.y - CollisionRadius;
+							//Engine::LOG(Engine::INFO) << "up";
+						}
+						//left
+						if (cx + CollisionRadius > rectp1.x && cy + CollisionRadius > rectp1.y && cy - CollisionRadius < rectp2.y && cx + CollisionRadius < rectp1.x + 0.5 * brick->Size.x) {
+							Velocity.x = -abs(Velocity.x);
+							//Position.x = rectp1.x - CollisionRadius;
+							//Engine::LOG(Engine::INFO) << "left";
+						}
+						//right
+						else if (cx - CollisionRadius < rectp2.x && cy + CollisionRadius > rectp1.y && cy - CollisionRadius < rectp2.y && cx - CollisionRadius > rectp1.x + 0.5 * brick->Size.x) {
+							Velocity.x = abs(Velocity.x);
+							//Position.x = rectp2.x + CollisionRadius;
+							//Engine::LOG(Engine::INFO) << "right";
+						}
 					}
-					//up
-					else if (cx + CollisionRadius > rectp1.x && cx - CollisionRadius < rectp2.x && cy + CollisionRadius > rectp1.y && cy + CollisionRadius < rectp1.y + 0.5 * brick->Size.y) {
-						Velocity.y = -abs(Velocity.y);
-						//Position.y = rectp1.y - CollisionRadius;
-						//Engine::LOG(Engine::INFO) << "up";
+					else {
+						Engine::Point cornerA = Engine::Point(brick->Position.x, brick->Position.y), cornerB = Engine::Point(brick->Position.x + brick->Size.x, brick->Position.y),
+							cornerC = Engine::Point(brick->Position.x, brick->Position.y + brick->Size.y), cornerD = Engine::Point(brick->Position.x + brick->Size.x, brick->Position.y + brick->Size.y);
+						bool isAboveAC = ((cornerA.x - cornerC.x) * (Position.y - cornerC.y) - (cornerA.y - cornerC.y) * (Position.x - cornerC.x)) > 0;
+						bool isAboveDB = ((cornerD.x - cornerB.x) * (Position.y - cornerB.y) - (cornerD.y - cornerB.y) * (Position.x - cornerB.x)) > 0;;
+						if (isAboveAC)
+						{
+							//Engine::LOG(Engine::INFO) << "AboveAC";
+							if (isAboveDB)
+							{
+								//top edge has intersected
+								Velocity.y = -Velocity.y;
+								//Engine::LOG(Engine::INFO) << "AboveDB";
+							}
+							else
+							{
+								//right edge intersected
+								Velocity.x = abs(Velocity.x);
+								//Engine::LOG(Engine::INFO) << "BelowDB";
+							}
+						}
+						else
+						{
+							//Engine::LOG(Engine::INFO) << "BelowAC";
+							if (isAboveDB)
+							{
+								//left edge has intersected
+								Velocity.x = -abs(Velocity.x);
+								//Engine::LOG(Engine::INFO) << "AboveDB";
+							}
+							else
+							{
+								//bottom edge intersected
+								Velocity.y = -Velocity.y;
+								//Engine::LOG(Engine::INFO) << "BelowDB";
+								
+							}
+						}
 					}
-					//left
-					if (cx + CollisionRadius > rectp1.x && cy + CollisionRadius > rectp1.y && cy - CollisionRadius < rectp2.y && cx + CollisionRadius < rectp1.x + 0.5 * brick->Size.x) {
-						Velocity.x = -abs(Velocity.x);
-						//Position.x = rectp1.x - CollisionRadius;
-						//Engine::LOG(Engine::INFO) << "left";
-					}
-					//right
-					else if (cx - CollisionRadius < rectp2.x && cy + CollisionRadius > rectp1.y && cy - CollisionRadius < rectp2.y && cx - CollisionRadius > rectp1.x + 0.5 * brick->Size.x) {
-						Velocity.x = abs(Velocity.x);
-						//Position.x = rectp2.x + CollisionRadius;
-						//Engine::LOG(Engine::INFO) << "right";
-					}
-
-
-
 					brick->Hit(damage);
 					break;
 				}

@@ -26,17 +26,14 @@
 #include "HardBrick.hpp"
 
 bool PlayScene::DebugMode = false;
-const std::vector<Engine::Point> PlayScene::directions = { Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
 const int PlayScene::StartY = 166+0.5*Brick::boldness, PlayScene::EndY = 700, PlayScene::StartX = 12+0.5*Brick::boldness;
 const int PlayScene::BlockWidth = 60- Brick::boldness, PlayScene::BlockHeight = 60 - Brick::boldness;
 const int PlayScene::MapWidth = 7, PlayScene::MapHeight = 7;
 const int PlayScene::BlockTotalW = PlayScene::BlockWidth + Brick::boldness + 6;
-const std::vector<int> PlayScene::code = { ALLEGRO_KEY_UP, ALLEGRO_KEY_UP, ALLEGRO_KEY_DOWN, ALLEGRO_KEY_DOWN,
-									ALLEGRO_KEY_LEFT, ALLEGRO_KEY_RIGHT, ALLEGRO_KEY_LEFT, ALLEGRO_KEY_RIGHT,
-									ALLEGRO_KEY_B, ALLEGRO_KEY_A, ALLEGRO_KEYMOD_SHIFT, ALLEGRO_KEY_ENTER };
 void PlayScene::Initialize() {
 	// TODO 5 (1/2): There's a bug in this file, which crashes the game when you win. Try to find it.
 	// TODO 5 (2/2): There's a cheat code in this file. Try to find it.
+	experimentalEngine = false;
 	ticks = 0;
 	balls = 1;
 	added_balls = 0;
@@ -47,7 +44,6 @@ void PlayScene::Initialize() {
 	wave = 0;
 	cur_State = State::GENERATING_BRICK;
 	MotherPosition = Engine::Point(240, EndY - 10 - 1);
-	MotherDirection = Engine::Point(0, -1);
 	// Add groups from bottom to top.
 	AddNewObject(new Engine::Image("play/background.png", 0, 0, 0, 0, 0, 0));
 	AddNewObject(BallGroup = new Group());
@@ -58,7 +54,7 @@ void PlayScene::Initialize() {
 	AddNewControlObject(UIGroup = new Group());
 	ReadDataHelper();
 	ConstructUI();
-	BallGroup->AddNewObject(new Ball(8, 1, MotherPosition, MotherDirection, 10));
+	BallGroup->AddNewObject(new Ball(10, 1, MotherPosition, Engine::Point(0,0), 10));
 }
 void PlayScene::Update(float deltaTime) {
 	// If we use deltaTime directly, then we might have Bullet-through-paper problem.
@@ -78,7 +74,7 @@ void PlayScene::Update(float deltaTime) {
 			return_balls = 0;
 			cur_State = State::GENERATING_BRICK;
 			for(;added_balls > 0; added_balls--, balls++)
-				BallGroup->AddNewObject(new Ball(8, 1, MotherPosition, MotherDirection, 10));
+				BallGroup->AddNewObject(new Ball(10, 1, MotherPosition, Engine::Point(0,0), 10));
 			UIBalls->Text = std::string("x") + std::to_string(balls);
 			UIBalls->Position.x = MotherPosition.x;
 		}
@@ -157,8 +153,9 @@ void PlayScene::Draw() const {
 		Engine::Point diff = InitPt - FinPt, velo = diff.Normalize();
 		if (diff.Magnitude() < 50 || velo.y > -0.2)
 			return;
-		al_draw_line(MotherPosition.x, MotherPosition.y, MotherPosition.x + velo.x * 100, MotherPosition.y + velo.y*100, 
+		al_draw_line(MotherPosition.x, MotherPosition.y, MotherPosition.x + velo.x * diff.Magnitude(), MotherPosition.y + velo.y* diff.Magnitude(),
 			al_map_rgba(255, 255, 255, 150), 5);
+		al_draw_filled_circle(InitPt.x, InitPt.y, 10, al_map_rgba(255, 255, 255, 150));
 	}
 	if (cur_State == FINISH) {
 		al_draw_filled_rectangle(50, 300, 430, 500, al_map_rgb(232, 32, 105));
@@ -205,6 +202,14 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
 }
 void PlayScene::OnKeyDown(int keyCode) {
 	IScene::OnKeyDown(keyCode);
+	if (keyCode == ALLEGRO_KEY_1) {
+		experimentalEngine = true;
+		Engine::LOG(Engine::INFO) << "Experimental Engine on";
+	}
+	else if (keyCode == ALLEGRO_KEY_0) {
+		experimentalEngine = false;
+		Engine::LOG(Engine::INFO) << "BExperimental Engine off";
+	}
 }
 void PlayScene::Hit() {
 	return;
