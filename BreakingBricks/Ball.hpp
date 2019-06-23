@@ -1,5 +1,5 @@
-#ifndef BULLET_HPP
-#define BULLET_HPP
+#ifndef BALL_HPP
+#define BALL_HPP
 #include <string>
 
 #include "Sprite.hpp"
@@ -17,11 +17,12 @@ protected:
 	float damage;
 	PlayScene* getPlayScene();
 public:
-	bool moving;
+	bool active;
+	int shock;
 	float CollisionRadius;
 	Engine::Point Velocity;
 	explicit Ball(float speed, float damage, Engine::Point position, Engine::Point velocity, float radius);
 	void Update(float deltaTime) override;
 	void Draw() const override;
 };
-#endif // BULLET_HPP
+#endif // BALL_HPP

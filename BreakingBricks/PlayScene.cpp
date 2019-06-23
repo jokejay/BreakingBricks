@@ -38,11 +38,14 @@ void PlayScene::Initialize() {
 	// TODO 5 (2/2): There's a cheat code in this file. Try to find it.
 	ticks = 0;
 	balls = 1;
+	added_balls = 0;
+	return_balls = 0;
+	emit_balls = 0;
 	money = 150;
 	SpeedMult = 1;
 	wave = 0;
 	cur_State = State::GENERATING_BRICK;
-	MotherPosition = Engine::Point(240, EndY - 10);
+	MotherPosition = Engine::Point(240, EndY - 10 - 1);
 	MotherDirection = Engine::Point(0, -1);
 	// Add groups from bottom to top.
 	AddNewObject(new Engine::Image("play/background.png", 0, 0, 0, 0, 0, 0));
@@ -62,7 +65,24 @@ void PlayScene::Update(float deltaTime) {
 	for (int i = 0; i < SpeedMult; i++) {
 		IScene::Update(deltaTime);
 	}
-	if (cur_State == State::GENERATING_BRICK) {
+	if (cur_State == State::BALL_RUNNING) {
+		if (emit_balls != balls) {
+			UIBalls->Text = std::string("x") + std::to_string(balls - emit_balls);
+		}
+		else {
+			UIBalls->Text = std::string("");
+		}
+		if (return_balls == balls) {
+			Engine::LOG(Engine::INFO) << "all balls are return " + std::to_string(balls);
+			return_balls = 0;
+			cur_State = State::GENERATING_BRICK;
+			for(;added_balls > 0; added_balls--, balls++)
+				BallGroup->AddNewObject(new Ball(8, 1, MotherPosition, MotherDirection, 10));
+			UIBalls->Text = std::string("x") + std::to_string(balls);
+			UIBalls->Position.x = MotherPosition.x;
+		}
+	}
+	else if (cur_State == State::GENERATING_BRICK) {
 		wave += 1;
 		UIWave->Text = std::to_string(wave);
 		if (wave > top_wave) {
@@ -100,8 +120,11 @@ void PlayScene::Update(float deltaTime) {
 					break;
 				}
 			}
-			if (!get_end)
+			if (!get_end) {
 				cur_State = SET_ANGLE;
+				added_balls++;
+			}
+				
 		}
 	}
 	
@@ -144,12 +167,18 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
 		Engine::Point diff = InitPt - FinPt, velo = diff.Normalize();
 		if (diff.Magnitude() < 50 || velo.y > -0.2)
 			return;
+		int EmitBalls = 0;
 		for (auto& it : BallGroup->GetObjects()) {
 			Ball* ball = dynamic_cast<Ball*>(it);
 			ball->Position = MotherPosition;
 			ball->Velocity = velo;
+			ball->shock = EmitBalls * 5;
+			ball->active = true;
+			EmitBalls++;
 		}
+		emit_balls = 0;
 		cur_State = State::BALL_RUNNING;
+		MotherPosition = Engine::Point(-1, -1);
 	}
 }
 void PlayScene::OnKeyDown(int keyCode) {
@@ -174,8 +203,9 @@ void PlayScene::ConstructUI() {
 	UIGroup->AddNewObject(UIWave = new Engine::Label(std::to_string(wave), "square.ttf", 70, 240, 52, 255, 255, 255, 255, 0.5, 0.5));
 	UIGroup->AddNewObject(new Engine::Label(std::string("TOP"), "square.ttf", 30, 415, 25, 255, 255, 255, 255, 0.5, 0.5));
 	UIGroup->AddNewObject(UITop = new Engine::Label(std::to_string(top_wave), "square.ttf", 48, 415, 66, 255, 255, 255, 255, 0.5, 0.5));
-	UIGroup->AddNewObject(UIMoney = new Engine::Label(std::to_string(money), "square.ttf", 48, 125, 752, 255, 255, 255, 255, 0.5, 0.5));
-	UIGroup->AddNewObject(new Engine::Image("play/coin.png", 40, 750, 50, 50, 0.5, 0.5));
+	UIGroup->AddNewObject(UIMoney = new Engine::Label(std::to_string(money), "square.ttf", 40, 110, 752, 255, 255, 255, 255, 0.5, 0.5));
+	UIGroup->AddNewObject(new Engine::Image("play/coin.png", 40, 750, 30, 30, 0.5, 0.5));
+	UIGroup->AddNewObject(UIBalls = new Engine::Label(std::string("x") + std::to_string(balls), "square.ttf", 24, MotherPosition.x, EndY + 10, 255, 255, 255, 255, 0.5, 0));
 }
 
 void PlayScene::UIBtnClicked(int id) {
@@ -209,4 +239,13 @@ void PlayScene::SaveDataHelper() {
 	fp << money << std::endl << top_wave;
 	fp.close();
 	
+}
+
+void PlayScene::ReturnBall() {
+	return_balls++;
+}
+
+void PlayScene::EmitBall() {
+	emit_balls++;
+	Engine::LOG(Engine::INFO) << "a ball emitted";
 }

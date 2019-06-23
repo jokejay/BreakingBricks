@@ -18,6 +18,9 @@ namespace Engine {
 class PlayScene final : public Engine::IScene {
 protected:
 	int balls;
+	int added_balls;
+	int return_balls;
+	int emit_balls;
 	int money;
 	int SpeedMult;
 	float down;
@@ -53,6 +56,7 @@ public:
 	Engine::Label* UIMoney;
 	Engine::Label* UIWave;
 	Engine::Label* UITop;
+	Engine::Label* UIBalls;
 	explicit PlayScene() = default;
 	void Initialize() override;
 	void Update(float deltaTime) override;
@@ -68,6 +72,8 @@ public:
 	void UIBtnClicked(int id);
 	void BackOnClick(int stage);
 	void SaveDataHelper();
+	void ReturnBall();
+	void EmitBall();
 	// void ModifyReadMapTiles();
 };
 #endif // PLAYSCENE_HPP
